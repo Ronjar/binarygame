@@ -4,6 +4,7 @@
     let targetNumbers = [randomNumber(), randomNumber(), randomNumber()]; // Startwerte für Zielzahlen
     let currentTargetIndex = 0; // Index der aktuellen Zielzahl
     let score = 0; // Punktzahl
+    let level = 1;
 
     // Erzeugt eine zufällige Zielzahl
     function randomNumber(): number {
@@ -12,6 +13,7 @@
 
     // Überprüft, ob der eingegangene Wert der aktuellen Zielzahl entspricht
     function checkMatch(event: CustomEvent<{ decimal: number }>): void {
+        //console.log(event.detail.decimal + " == " + targetNumbers[currentTargetIndex]);
         if (event.detail.decimal === targetNumbers[currentTargetIndex]) {
             score++;
             targetNumbers.push(randomNumber()); // Neue Zahl hinzufügen
@@ -33,22 +35,14 @@
 </script>
 
 <div class="flex justify-between">
-    <div class="w-1/4 mx-auto"></div>
-    <div class="flex-center">
-        <BinaryInput on:update={checkMatch} />
+    <div></div>
+    <div class="basis-1/2 flex justify-center">
+        <div class="mt-48">
+            <BinaryInput on:update={checkMatch} />
 
-        <div class="stack mt-8">
-            {#each targetNumbers as number, index}
-                <div
-                    class={`card bg-primary text-primary-content shadow-xl ${index === 0 ? "z-10 scale-110" : "z-0"} transition-transform`}
-                    id={`card-${index}`}
-                >
-                    <div class="card-body">
-                        <h2 class="card-title">Target Number</h2>
-                        <p>{number}</p>
-                    </div>
-                </div>
-            {/each}
+            <div class="flex">
+
+            </div>
         </div>
     </div>
 
