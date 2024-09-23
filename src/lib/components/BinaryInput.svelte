@@ -45,22 +45,28 @@
 
 <div class="flex flex-row justify-center gap-3">
     {#each Array(count) as _, index}
-    <div>
-        <label class="swap text-2xl">
-            <input type="checkbox" bind:checked={values[index]} />
-            <div class="btn swap-on btn-primary text-2xl flex items-center justify-center w-20 h-20">
-                <div class="m-5">1</div>
-            </div>
-            <div class="btn swap-off text-2xl flex items-center justify-center w-20 h-20">
-                <div class="m-5">0</div>
-            </div>
-        </label>
-        {#if count > 4}
-        <p class="w-full flex justify-center">{Math.pow(2, count - 1 - index)}</p>
-        {/if}
-    </div>
+        <div>
+            <label class="swap text-2xl">
+                <input type="checkbox" bind:checked={values[index]} />
+                <div
+                    class="btn swap-on btn-primary text-2xl flex items-center justify-center w-20 h-20"
+                >
+                    <div class="m-5">1</div>
+                </div>
+                <div
+                    class="btn swap-off text-2xl flex items-center justify-center w-20 h-20"
+                >
+                    <div class="m-5">0</div>
+                </div>
+            </label>
+            <p class="w-full flex justify-center">
+                {Math.pow(2, count - 1 - index)}
+            </p>
+        </div>
     {/each}
-    <p class="text-2xl flex items-center justify-center w-20 h-20">
-        {decimalValue}
-    </p>
+    {#if count > 4}
+        <p class="text-2xl flex items-center justify-center w-20 h-20">
+            {decimalValue}
+        </p>
+    {/if}
 </div>
