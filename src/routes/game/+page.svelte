@@ -1,47 +1,95 @@
 <script lang="ts">
     import BinaryInput from "$lib/components/BinaryInput.svelte";
+    import QuestionCard from "$lib/components/QuestionCard.svelte";
+    import { generateQuestions } from "$lib/scripts/generateQuestions";
+    import { onMount } from "svelte";
 
-    let targetNumbers = [randomNumber(), randomNumber(), randomNumber()]; // Startwerte für Zielzahlen
-    let currentTargetIndex = 0; // Index der aktuellen Zielzahl
+    let questionCard: QuestionCard[] = [];
+    let binaryInput: BinaryInput;
+    let currentQuestionIndex = 0; // Index der aktuellen Zielzahl
     let score = 0; // Punktzahl
-    let level = 1;
-
-    // Erzeugt eine zufällige Zielzahl
-    function randomNumber(): number {
-        return Math.floor(Math.random() * 256); // Für ein 8-Bit-Binärsystem
-    }
+    let level = 0;
 
     // Überprüft, ob der eingegangene Wert der aktuellen Zielzahl entspricht
     function checkMatch(event: CustomEvent<{ decimal: number }>): void {
         //console.log(event.detail.decimal + " == " + targetNumbers[currentTargetIndex]);
-        if (event.detail.decimal === targetNumbers[currentTargetIndex]) {
+        if (
+            event.detail.decimal === questionCard[currentQuestionIndex].question
+        ) {
             score++;
-            targetNumbers.push(randomNumber()); // Neue Zahl hinzufügen
-            currentTargetIndex++; // Zum nächsten Kärtchen wechseln
-            highlightAndRemoveCurrentCard();
+            saveGame();
+            questionCard[currentQuestionIndex].correctAnswer();
+            nextQuestion();
         }
     }
 
-    // Lässt das aktuelle Kärtchen grün aufleuchten und verschwinden
-    function highlightAndRemoveCurrentCard(): void {
-        const card = document.querySelector(`#card-${currentTargetIndex}`);
-        card.classList.add("btn-success");
+    function getQuestions() {
+        let nextLevel = generateQuestions(level);
+        binaryInput.setCount(nextLevel.bitCount);
+        for (let i = 0; i < 3; i++) {
+            questionCard[i].setQuestion(nextLevel.numbers[i]);
+        }
+    }
+
+    function nextQuestion() {
         setTimeout(() => {
-            card.remove();
-            targetNumbers.shift(); // Entfernt die erste Zahl im Array
-            currentTargetIndex--; // Korrigiert den Index nach dem Entfernen der Karte
+            currentQuestionIndex++;
+            if (currentQuestionIndex >= 3) {
+                newLevel();
+            }
+            binaryInput.reset();
+            questionCard[currentQuestionIndex].showQuestion();
         }, 1000);
+    }
+
+    function firstQuestion() {
+        if (currentQuestionIndex >= 3) {
+            newLevel();
+        }
+        setTimeout(() => {
+            questionCard[currentQuestionIndex].showQuestion();
+        }, 1000);
+    }
+
+    function newLevel() {
+        currentQuestionIndex = 0;
+        level++;
+        getQuestions();
+        for (let i = 0; i < questionCard.length; i++) {
+            questionCard[i].reset();
+        }
+    }
+
+    onMount(() => {
+        loadGame();
+        newLevel();
+        firstQuestion();
+    });
+
+    function loadGame() {
+        let storedScore = localStorage.getItem('score');
+        let storedLevel = localStorage.getItem('level');
+        score = storedScore ? parseInt(storedScore) : 0;
+        level = storedLevel ? parseInt(storedLevel) : 0;
+    }
+
+    function saveGame() {
+        localStorage.setItem('score', score.toString());
+        localStorage.setItem('level', level.toString());
     }
 </script>
 
 <div class="flex justify-between">
     <div></div>
     <div class="basis-1/2 flex justify-center">
-        <div class="mt-48">
-            <BinaryInput on:update={checkMatch} />
-
-            <div class="flex">
-
+        <div class="mt-48 w-full">
+            <div class="w-full flex justify-center">
+                <BinaryInput on:update={checkMatch} bind:this={binaryInput} />
+            </div>
+            <div class="mt-8 space-x-4 flex justify-center">
+                <QuestionCard bind:this={questionCard[0]} />
+                <QuestionCard bind:this={questionCard[1]} />
+                <QuestionCard bind:this={questionCard[2]} />
             </div>
         </div>
     </div>

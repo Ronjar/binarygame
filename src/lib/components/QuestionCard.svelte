@@ -1,3 +1,4 @@
+<svelte:options accessors />
 <script lang="ts">
     import MaterialSymbolsLock from "~icons/material-symbols/lock";
     import MaterialSymbolsCheckRounded from "~icons/material-symbols/check-rounded";
@@ -5,6 +6,10 @@
     let isOn = false;
     let isCorrect = false;
     export let question = 0;
+
+    export function setQuestion(newQuestion: number) {
+        question = newQuestion;
+    }
 
     export function showQuestion() {
         isCorrect = false;
