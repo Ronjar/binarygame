@@ -26,7 +26,7 @@
                         <input
                             type="checkbox"
                             class="theme-controller"
-                            value="dracula"
+                            value="retro"
                         />
                         <MaterialSymbolsLightModeRounded
                             class="swap-off fill-current h-8 w-8"

@@ -55,7 +55,9 @@
                 <div class="m-5">0</div>
             </div>
         </label>
+        {#if count > 4}
         <p class="w-full flex justify-center">{Math.pow(2, count - 1 - index)}</p>
+        {/if}
     </div>
     {/each}
     <p class="text-2xl flex items-center justify-center w-20 h-20">
