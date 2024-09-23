@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en" data-theme="retro">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" href="/binarygame/favicon.png" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		
+		<link rel="modulepreload" href="/binarygame/app/immutable/entry/start.B5o0B12A.js">
+		<link rel="modulepreload" href="/binarygame/app/immutable/chunks/entry.JZ83qb9S.js">
+		<link rel="modulepreload" href="/binarygame/app/immutable/chunks/scheduler.CvXGCIA6.js">
+		<link rel="modulepreload" href="/binarygame/app/immutable/entry/app.BKaWDqje.js">
+		<link rel="modulepreload" href="/binarygame/app/immutable/chunks/index.Bj8-oLah.js">
+	</head>
+	<body data-sveltekit-preload-data="hover">
+		<div style="display: contents">
+			<script>
+				{
+					__sveltekit_k0ivo7 = {
+						base: "/binarygame",
+						assets: "/binarygame"
+					};
+
+					const element = document.currentScript.parentElement;
+
+					Promise.all([
+						import("/binarygame/app/immutable/entry/start.B5o0B12A.js"),
+						import("/binarygame/app/immutable/entry/app.BKaWDqje.js")
+					]).then(([kit, app]) => {
+						kit.start(app, element);
+					});
+				}
+			</script>
+		</div>
+	</body>
+</html>
