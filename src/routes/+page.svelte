@@ -12,10 +12,10 @@
 
     // Überprüft, ob der eingegangene Wert der aktuellen Zielzahl entspricht
     function checkMatch(event: CustomEvent<{ decimal: number }>): void {
-        //console.log(event.detail.decimal + " == " + targetNumbers[currentTargetIndex]);
         if (
             event.detail.decimal === questionCard[currentQuestionIndex].question
         ) {
+            binaryInput.disable();
             score++;
             saveGame();
             questionCard[currentQuestionIndex].correctAnswer();
@@ -26,6 +26,8 @@
     function getQuestions() {
         let nextLevel = generateQuestions(level);
         binaryInput.setCount(nextLevel.bitCount);
+        binaryInput.setSumEnabled(nextLevel.isSumEnabled);
+        binaryInput.setIndicatorsEnabled(nextLevel.areIndicatorsEnabled);
         for (let i = 0; i < 3; i++) {
             questionCard[i].setQuestion(nextLevel.numbers[i]);
         }
@@ -39,6 +41,7 @@
             }
             binaryInput.reset();
             questionCard[currentQuestionIndex].showQuestion();
+            binaryInput.enable();
         }, 1000);
     }
 

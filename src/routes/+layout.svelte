@@ -1,9 +1,23 @@
 <script lang="ts">
     import "../app.css";
+    import { onMount } from "svelte";
 
     import MaterialSymbolsDarkModeRounded from "~icons/material-symbols/dark-mode-rounded";
     import MaterialSymbolsLightModeRounded from "~icons/material-symbols/light-mode-rounded";
     import MaterialSymbolsVideogameAssetRounded from '~icons/material-symbols/videogame-asset-rounded'
+
+    let isLight = false;
+
+    onMount(() => {
+        console.log(localStorage.getItem('theme'));
+        isLight = localStorage.getItem('theme') == 'light';
+
+    });
+
+    function setTheme(value: boolean) {
+        localStorage.setItem('theme', value ? 'light' : 'dark');
+    }
+
 </script>
 
 <div class="min-h-screen">
@@ -26,7 +40,9 @@
                         <input
                             type="checkbox"
                             class="theme-controller"
+                            on:change={(e) => setTheme(e.target.checked)}
                             value="retro"
+                            checked={isLight}
                         />
                         <MaterialSymbolsLightModeRounded
                             class="swap-off fill-current h-8 w-8"

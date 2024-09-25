@@ -9,13 +9,32 @@
     export let count: number = 2;
     let values: boolean[] = Array(count).fill(false);
     let decimalValue: number = 0;
+    let sumEnabled = false;
+    let indicatorsEnabled = false;
 
     let ignoreReactivity = false;
 
-    export function setCount(newCount: number): void {
+    let enabled = true;
+
+    export function disable() {
+        enabled = false;
+    }
+    export function enable() {
+        enabled = true;
+    }
+
+    export function setCount(newCount: number) {
         ignoreReactivity = true;
         count = newCount;
         values = Array(count).fill(false);
+    }
+
+    export function setSumEnabled(enabled: boolean) {
+        sumEnabled = enabled;
+    }
+    export function setIndicatorsEnabled(enabled: boolean) {
+        indicatorsEnabled = enabled;
+        console.log("Indicators enabled: " + enabled);
     }
 
     // Reagiere auf Änderungen im Array `values`
@@ -47,7 +66,7 @@
     {#each Array(count) as _, index}
         <div>
             <label class="swap text-2xl">
-                <input type="checkbox" bind:checked={values[index]} />
+                <input type="checkbox" bind:checked={values[index]} disabled='{!enabled}' />
                 <div
                     class="btn swap-on btn-primary text-2xl flex items-center justify-center w-20 h-20"
                 >
@@ -59,12 +78,14 @@
                     <div class="m-5">0</div>
                 </div>
             </label>
-            <p class="w-full flex justify-center">
-                {Math.pow(2, count - 1 - index)}
-            </p>
+            {#if indicatorsEnabled}
+                <p class="w-full flex justify-center">
+                    {Math.pow(2, count - 1 - index)}
+                </p>
+            {/if}
         </div>
     {/each}
-    {#if count > 4}
+    {#if sumEnabled}
         <p class="text-2xl flex items-center justify-center w-20 h-20">
             {decimalValue}
         </p>
